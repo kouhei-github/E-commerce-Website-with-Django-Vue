@@ -58,6 +58,10 @@ CORS_ALLOWED_ORIGIN = [
     "https://localhost:8080",
 ]
 
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:8080",
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
