@@ -6,11 +6,11 @@
           <strong> Djanckets </strong>
         </router-link>
         <a
-          href=""
           class="navbar-burger"
           aria-label="menu"
           aria-expanded="false"
           data-target="navbar-menu"
+          @click="showMobileMenue = !showMobileMenue"
         >
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
@@ -18,7 +18,11 @@
         </a>
       </div>
 
-      <div class="navbar-menu" id="navbar-menu">
+      <div
+        class="navbar-menu"
+        id="navbar-menu"
+        v-bind:class="{ 'is-active': showMobileMenue }"
+      >
         <div class="navbar-end">
           <router-link to="/summer" class="navbar-item">Summer</router-link>
           <router-link to="/winter" class="navbar-item">Winter</router-link>
@@ -46,6 +50,18 @@
     </footer>
   </div>
 </template>
+
+<script lang="ts">
+import { defineComponent, ref } from "vue";
+export default defineComponent({
+  setup() {
+    const showMobileMenue = ref(false);
+    return {
+      showMobileMenue,
+    };
+  },
+});
+</script>
 
 <style lang="scss">
 @import "../node_modules/bulma";
