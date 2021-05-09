@@ -119,7 +119,7 @@ DOMAIN_ROOT=ご自身のpath/djackets_django/
 
 # Author
 
-作成情報を列挙する
+作成者情報
 
 - Kohei Nagamatsu
 - k509937k509937@yahoo.com
