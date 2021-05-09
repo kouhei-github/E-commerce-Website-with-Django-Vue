@@ -33,7 +33,7 @@
               >
               <router-link to="/cart" class="button is-success">
                 <span class="icon"><i class="fa fa-shopping-cart"></i></span>
-                <span>Cart</span>
+                <span>Cart({{ cartTotalLengh }})</span>
               </router-link>
             </div>
           </div>
@@ -52,12 +52,43 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, reactive, ref, computed, onMounted } from "vue";
+import { useStore } from "vuex";
+
 export default defineComponent({
   setup() {
+    const store = useStore();
     const showMobileMenue = ref(false);
+    const cart = reactive({
+      cart: {
+        items: [
+          {
+            quantity: 1,
+            product: {},
+          },
+        ],
+      },
+    });
+    // Vuexの利用
+    store.commit("initializeStore");
+
+    onMounted(() => {
+      cart.cart = store.state.cart;
+    });
+
+    const cartTotalLengh = computed(() => {
+      let totalLength = 0;
+
+      for (let i = 0; i < cart.cart.items.length; i++) {
+        totalLength += cart.cart.items[i].quantity;
+      }
+      return totalLength;
+    });
+    // フロントに値を渡す
     return {
+      cartTotalLengh,
       showMobileMenue,
+      cart,
     };
   },
 });

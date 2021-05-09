@@ -62,7 +62,6 @@ export default defineComponent({
     });
     return {
       latestProducts,
-      getLatestProduct,
     };
   },
 });

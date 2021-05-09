@@ -25,7 +25,7 @@
             />
           </div>
           <div class="control">
-            <a class="button is-dark">Add to cart</a>
+            <a class="button is-dark" @click="add()">Add to cart</a>
           </div>
         </div>
       </div>
@@ -36,12 +36,15 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive } from "vue";
 import { useRoute } from "vue-router";
+import { useStore } from "vuex";
+
 import axios from "axios";
 
 export default defineComponent({
   name: "Home",
   components: {},
   setup() {
+    const store = useStore();
     const route = useRoute();
     const detailInfos = reactive({
       quantity: 1,
@@ -62,9 +65,17 @@ export default defineComponent({
           console.log(error);
         });
     };
+    const add = () => {
+      if (isNaN(detailInfos.quantity) || detailInfos.quantity < 1) {
+        detailInfos.quantity = 1;
+      }
+
+      store.commit("addToCart", detailInfos);
+    };
 
     return {
       detailInfos,
+      add,
     };
   },
 });
