@@ -20,7 +20,8 @@ Vue3.x で導入された Composition Api の仕組みは今後 Vue で主流に
 
 # Requirement
 
-"hoge"を動かすのに必要なライブラリなどを列挙する
+下記がそれぞれの Version になります。
+Vue では TypeScript を使用しています。
 
 - node (v12.16.2)
 
@@ -49,7 +50,7 @@ npm install
 
 # Usage
 
-DEMO の実行方法など、"hoge"の基本的な使い方を説明する
+サイトをローカルで見るための手順
 
 ```bash
 git clone https://github.com/kouhei-github/E-commerce-Website-with-Django-Vue.git
