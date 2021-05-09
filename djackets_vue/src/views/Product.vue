@@ -39,6 +39,7 @@ import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 
 import axios from "axios";
+import { toast } from "bulma-toast";
 
 export default defineComponent({
   name: "Home",
@@ -48,22 +49,28 @@ export default defineComponent({
     const route = useRoute();
     const detailInfos = reactive({
       quantity: 1,
-      product: {},
+      product: {
+        name: "",
+      },
     });
     onMounted(() => {
       getProduct();
     });
-    const getProduct = () => {
+    const getProduct = async () => {
+      store.commit("setIsLoading", true);
       const category_slug = route.params.category_slug;
       const product_slug = route.params.product_slug;
-      axios
+      await axios
         .get(`/api/v1/products/${category_slug}/${product_slug}`)
         .then((responce) => {
           detailInfos.product = responce.data;
+
+          document.title = detailInfos.product.name + " | Djackets";
         })
         .catch((error) => {
           console.log(error);
         });
+      store.commit("setIsLoading", false);
     };
     const add = () => {
       if (isNaN(detailInfos.quantity) || detailInfos.quantity < 1) {
@@ -71,6 +78,14 @@ export default defineComponent({
       }
 
       store.commit("addToCart", detailInfos);
+      toast({
+        message: "The product was added to the cart",
+        type: "is-success",
+        dismissible: true,
+        pauseOnHover: true,
+        duration: 2000,
+        position: "bottom-right",
+      });
     };
 
     return {

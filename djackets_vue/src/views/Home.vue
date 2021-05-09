@@ -41,14 +41,18 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue"; // @ is an alias to /src
 import axios from "axios";
+import { useStore } from "vuex";
 
 export default defineComponent({
   name: "Home",
   components: {},
   setup() {
+    const store = useStore();
     const latestProducts = ref([]);
-    const getLatestProduct = () => {
-      axios
+    const getLatestProduct = async () => {
+      store.commit("setIsLoading", true);
+
+      await axios
         .get("/api/v1/latest-products/")
         .then((responce) => {
           latestProducts.value = responce.data;
@@ -56,9 +60,13 @@ export default defineComponent({
         .catch((error) => {
           console.log(error);
         });
+
+      store.commit("setIsLoading", false);
     };
     onMounted(() => {
       getLatestProduct();
+
+      document.title = "Home | Djanckets";
     });
     return {
       latestProducts,

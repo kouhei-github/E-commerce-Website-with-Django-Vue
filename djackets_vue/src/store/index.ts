@@ -77,6 +77,10 @@ export default createStore(<Store>{
 
       localStorage.setItem("cart", JSON.stringify(state.cart));
     },
+    // eslint-disable-next-line
+    setIsLoading(state: State, status: any) {
+      state.isLoading = status;
+    },
   },
   actions: {},
   modules: {},
