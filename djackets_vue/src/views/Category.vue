@@ -3,6 +3,7 @@
     <div class="columns is-multiline">
       <div class="column is-12">
         <h2 class="is-size-2 has-text-centered">{{ category.name }}</h2>
+        <p style="display: none;">{{ computedCategory }}</p>
       </div>
 
       <ProductBox
@@ -15,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted } from "vue";
+import { defineComponent, reactive, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 
@@ -23,20 +24,20 @@ import axios from "axios";
 import { toast } from "bulma-toast";
 
 interface Product {
-  id: number;
-  name: string;
-  get_absolute_url: string;
-  description: string;
-  price: string;
-  get_image: string;
-  get_thumbnail: string;
+    id: number;
+    name: string;
+    get_absolute_url: string;
+    description:  string;
+    price: string;
+    get_image: string;
+    get_thumbnail: string;
 }
 
 interface Category {
-  id: number;
-  name: string;
-  get_absolute_url: string;
-  products: Product[];
+    id: number;
+    name: string;
+    get_absolute_url: string;
+    products: Product[];
 }
 
 export default defineComponent({
@@ -45,26 +46,24 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
     const category = reactive<Category>({
-      id: 1,
-      name: "",
-      get_absolute_url: "",
-      products: [
-        {
-          id: 1,
-          name: "",
-          get_absolute_url: "",
-          description: "",
-          price: "",
-          get_image: "",
-          get_thumbnail:
-            "http://127.0.0.1:8000/media/uploads/summer1_qZiXXn6.jpg",
-        },
-      ],
+        id: 1,
+        name: "",
+        get_absolute_url: "",
+        products: [
+            {
+                "id": 1,
+                "name": "",
+                "get_absolute_url": "",
+                "description": "",
+                "price": "",
+                "get_image": "",
+                "get_thumbnail": "http://127.0.0.1:8000/media/uploads/summer1_qZiXXn6.jpg"
+            }
+        ]
     });
 
     onMounted(() => {
       getCategory();
-      console.log(category);
     });
 
     const getCategory = async () => {
@@ -73,7 +72,12 @@ export default defineComponent({
       await axios
         .get(`/api/v1/products/${categorySlug}/`)
         .then((responce) => {
-          category.products = responce.data;
+        console.log(responce.data.name);
+        //   category.products = responce.data;
+          category.id = responce.data.id;
+          category.name = responce.data.name;
+          category.get_absolute_url = responce.data.get_absolute_url;
+          category.products = responce.data.products;
 
           document.title = category.name + "| Djackets";
         })
@@ -92,8 +96,15 @@ export default defineComponent({
       store.commit("setIsLoading", false);
     };
 
+    const computedCategory = computed(() => {
+      const categorySlug = route.params.category_slug;
+      getCategory();
+      return categorySlug;
+    });
+
     return {
       category,
+      computedCategory,
     };
   },
 });

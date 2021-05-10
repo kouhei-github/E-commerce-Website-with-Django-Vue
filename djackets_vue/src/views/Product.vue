@@ -41,17 +41,46 @@ import { useStore } from "vuex";
 import axios from "axios";
 import { toast } from "bulma-toast";
 
+interface ProductDetail {
+    quantity: number;
+    product: {
+      id: number;
+      name: string;
+      get_absolute_url: string;
+      description: string;
+      price: string;
+      get_image: string;
+      get_thumbnail: string;
+  };
+}
+
+interface Reponce {
+    id: number;
+    name: string;
+    get_absolute_url: string;
+    description: string;
+    price: string;
+    get_image: string;
+    get_thumbnail: string;
+}
+
 export default defineComponent({
   name: "Home",
   components: {},
   setup() {
     const store = useStore();
     const route = useRoute();
-    const detailInfos = reactive({
-      quantity: 1,
-      product: {
-        name: "",
-      },
+    const detailInfos = reactive<ProductDetail>({
+        quantity: 1,
+        product: {
+          id: 1,
+          name: "",
+          get_absolute_url: "",
+          description: "",
+          price: "",
+          get_image: "",
+          get_thumbnail: "",
+      }
     });
     onMounted(() => {
       getProduct();
@@ -63,7 +92,14 @@ export default defineComponent({
       await axios
         .get(`/api/v1/products/${category_slug}/${product_slug}`)
         .then((responce) => {
-          detailInfos.product = responce.data;
+          const responceObject: Reponce = responce.data;
+          detailInfos.product.id = responce.data.id;
+          detailInfos.product.name = responce.data.name;
+          detailInfos.product.get_absolute_url = responce.data.get_absolute_url;
+          detailInfos.product.description = responce.data.description;
+          detailInfos.product.price = responce.data.price;
+          detailInfos.product.get_image = responce.data.get_image;
+          detailInfos.product.get_thumbnail = responce.data.get_thumbnail;
 
           document.title = detailInfos.product.name + " | Djackets";
         })

@@ -80,7 +80,7 @@ export default defineComponent({
     store.commit("initializeStore");
 
     onMounted(() => {
-      cart.cart = store.state.cart;
+      cart.cart.items = store.state.cart;
     });
 
     const cartTotalLengh = computed(() => {
