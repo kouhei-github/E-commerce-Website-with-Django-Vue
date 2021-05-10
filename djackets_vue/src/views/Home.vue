@@ -43,12 +43,24 @@ import { defineComponent, onMounted, ref } from "vue"; // @ is an alias to /src
 import axios from "axios";
 import { useStore } from "vuex";
 
+interface LatestProduct {
+  id: number;
+  name: string;
+  get_absolute_url: string;
+  description: string;
+  price: string;
+  get_image: string;
+  get_thumbnail: string;
+}
+
 export default defineComponent({
   name: "Home",
   components: {},
   setup() {
     const store = useStore();
-    const latestProducts = ref([]);
+    const latestProducts = ref<LatestProduct[]>([]); //TypeScriptで書くなら型を明記しよう！！
+    // const latestProducts = ref([]); //これでも大丈夫(any型)
+
     const getLatestProduct = async () => {
       store.commit("setIsLoading", true);
 
