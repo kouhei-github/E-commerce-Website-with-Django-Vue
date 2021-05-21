@@ -73,7 +73,6 @@ export default defineComponent({
         .catch((error) => {
           console.log(error);
         });
-
       store.commit("setIsLoading", false);
     };
     onMounted(() => {
