@@ -68,6 +68,7 @@ export default defineComponent({
         .get("/api/v1/latest-products/")
         .then((responce) => {
           latestProducts.value = responce.data;
+          console.log(latestProducts.value);
         })
         .catch((error) => {
           console.log(error);

@@ -18,7 +18,7 @@ class ProductDetail(APIView):
     def get_object(self, category_slug, product_slug):
         try:
             return Product.objects.filter(category__slug=category_slug).get(slug=product_slug)
-        except product.DoesNotExist:
+        except Product.DoesNotExist:
             raise Http404
 
     def get(self, request, category_slug, product_slug, format=None):
